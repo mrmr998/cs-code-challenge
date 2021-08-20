@@ -1,286 +1,196 @@
 <!DOCTYPE html>
-  <html>
+<html>
 
-  <head>
-      <title>Todo list App</title>
-      <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
-  </head>
+<head>
+  <title>Todo list App</title>
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+  <style type="text/css">
+    html body {
+      background: #ffffff;
+      color: #333;
+      font-family: Lato, sans-serif
+    }
 
-  <body>
-      <div class="container">
-          <p>
-              <label id="new-task-label" for="new-task" style="display: block; margin: 0 0 20px">
-                  <b>Add Item</b>
-              </label>
-              <input id="new-task" type="text">
-              <button>Add</button>
-          </p>
+    html body.container {
+      display: block;
+      width: 375px;
+      margin: 5%auto 0
+    }
 
-          <h3>
-            <b>Todo</b>
-          </h3>
-          <ul id="incomplete-tasks">
-              <li>
-                  <input type="checkbox">
-                  <label>Pay Bills</label>
-                  <input type="text">
-                  <button class="edit">Edit</button>
-                  <button class="delete">Delete</button>
-              <li class="editMode">
-                  <input type="checkbox">
-                  <label>Go Shopping</label>
-                  <input type="text" value="Go Shopping">
-                  <button class="edit">Save</button>
-                  <button class="delete">Delete</button>
-              </li>
-          </ul>
+    ul {
+      margin: 0px;
+      padding: 0px
+    }
 
-          <h3>
-            <b>Completed</b>
-          </h3>
-          <ul id="completed-tasks">
-              <li>
-                  <input type="checkbox" checked>
-                  <label>See the Doctor</label>
-                  <input type="text">
-                  <button class="edit">Edit</button>
-                  <button class="delete">Delete</button>
-              </li>
-          </ul>
-      </div>
+    ul li input[type="text"] {
+      display: none
+    }
 
-      <script>
-        var taskInput = document.getElementById("new-task");
-        var addButton = document.getElementsByTagName("button")[0];
-        var incompleteTasksHolder = document.getElementById("incomplete-tasks");
-        var completedTasksHolder = document.getElementById("completed-tasks");
+    ul li.editMode input[type="text"] {
+      display: block;
+      display: -webkit-inline-box;
+      display: -ms-inline-flexbox;
+      display: inline-flex
+    }
 
-        var createNewTaskElement = function(taskString, arr) {
-          listItem = document.createElement("li");
-          checkBox = document.createElement("input");
-          label = document.createElement("label");
-          editInput = document.createElement("input");
-          editButton = document.createElement("button");
-          deleteButton = document.createElement("button");
+    ul li.editMode label {
+      display: none
+    }
 
-          checkBox.type = "checkbox";
-          editInput.type = "text";
-          editButton.innerText = "Edit";
-          editButton.className = "edit";
-          deleteButton.innerText = "Delete";
-          deleteButton.className = "delete";
-          label.innerText = taskString;
+    li {
+      clear: both;
+      list-style: none;
+      overflow: hidden;
+      padding: 20px 0px;
+      border-bottom: 1px solid#eee
+    }
 
-          listItem.appendChild(checkBox);
-          listItem.appendChild(label);
-          listItem.appendChild(editInput);
-          listItem.appendChild(editButton);
-          listItem.appendChild(deleteButton);
+    li* {
+      display: -webkit-inline-box;
+      display: -ms-inline-flexbox;
+      display: inline-flex
+    }
 
-          return listItem;
-        };
+    li>input[type="checkbox"] {
+      margin: 0 10px;
+      position: relative
+    }
 
-        var addTask = function () {
-          var listItemName = taskInput.value || "New Item"
-          listItem = createNewTaskElement(listItemName)
-          incompleteTasksHolder.appendChild(listItem)
-          bindTaskEvents(listItem, taskCompleted)
-          taskInput.value = "";
-        };
+    li>label {
+      font-size: 18px;
+      line-height: 40px;
+      width: 200px;
+      padding: 0 0 0 11px
+    }
 
-        var editTask = function () {
-          var listItem = this.parentNode;
-          var editInput = listItem.querySelectorAll("input[type=text")[0];
-          var label = listItem.querySelector("label");
-          var button = listItem.getElementsByTagName("button")[0];
+    li>input[type="text"] {
+      width: 190px
+    }
 
-          var containsClass = listItem.classList.contains("editMode");
-          if (containsClass) {
-              label.innerText = editInput.value
-              button.innerText = "Edit";
-          } else {
-             editInput.value = label.innerText
-             button.innerText = "Save";
-          }
-          
-          listItem.classList.toggle("editMode");
-        };
+    li>.delete:hover {
+      color: #cf2323
+    }
 
-        var deleteTask = function (el) {
-          var listItem = this.parentNode;
-          var ul = listItem.parentNode;
-          ul.removeChild(listItem);
-        };
+    h3 {
+      clear: both;
+      list-style: none;
+      color: #333333;
+      font-weight: 700;
+      font-size: 15px;
+      border-bottom: 2px solid#333;
+      padding: 30px 0 10px;
+      margin: 0px;
+      text-transform: uppercase
+    }
 
-        var taskCompleted = function (el) {
-          var listItem = this.parentNode;
-          completedTasksHolder.appendChild(listItem);
-          bindTaskEvents(listItem, taskIncomplete);
-        };
+    button {
+      background: none;
+      border: 0px;
+      color: #888888;
+      font-size: 15px;
+      width: 60px;
+      margin: 10px 0 0;
+      font-family: Lato, sans-serif;
+      cursor: pointer
+    }
 
-        var taskIncomplete = function() {
-          var listItem = this.parentNode;
-          incompleteTasksHolder.appendChild(listItem);
-          bindTaskEvents(listItem, taskCompleted);
-        };
+    button:hover {
+      color: #333
+    }
 
-        var bindTaskEvents = function(taskListItem, checkBoxEventHandler, cb) {
-          var checkBox = taskListItem.querySelectorAll("input[type=checkbox]")[0];
-          var editButton = taskListItem.querySelectorAll("button.edit")[0];
-          var deleteButton = taskListItem.querySelectorAll("button.delete")[0];
-          editButton.onclick = editTask;
-          deleteButton.onclick = deleteTask;
-          checkBox.onchange = checkBoxEventHandler;
-        };
+    label[for="new-task"] {
+      color: #333333;
+      font-weight: 700;
+      font-size: 15px;
+      border-bottom: 2px solid#333;
+      padding: 30px 0 10px;
+      margin: 0px;
+      text-transform: uppercase;
+      display: block;
+      margin: 0 0 20px
+    }
 
-        addButton.addEventListener("click", addTask);
+    input[type="text"] {
+      margin: 0;
+      font-size: 18px;
+      line-height: 18px;
+      height: 18px;
+      padding: 10px;
+      border: 1px solid#ddd;
+      background: #fff;
+      border-radius: 6px;
+      font-family: Lato, sans-serif;
+      color: #888
+    }
 
-        for (var i = 0; i < incompleteTasksHolder.children.length; i++) {
-          bindTaskEvents(incompleteTasksHolder.children[i], taskCompleted);
-        }
+    input[type="text"]:focus {
+      color: #333
+    }
 
-        for (var i = 0; i < completedTasksHolder.children.length; i++) {
-          bindTaskEvents(completedTasksHolder.children[i], taskIncomplete);
-        }
-      </script>
+    input#new-task {
+      display: -webkit-inline-box;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      width: 280px
+    }
 
-  </body>
+    form>button:hover {
+      color: #0fc57c
+    }
+
+    #completed-tasks label {
+      text-decoration: line-through;
+      color: #888
+    }
+
+    #incomplete-tasks {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column
+    }
+
+    html body form input:focus,
+    html body ul li input:focus {
+      -webkit-box-shadow: 0 0 5px#51cbee;
+      box-shadow: 0 0 5px#51cbee;
+      border: 1px solid#51cbee
+    }
+
+    html body form button:focus,
+    html body ul li button:focus {
+      border: 1px transparent#637377
+    }
+
+    @media screen and(max-width:375px) {
+      .container {
+        width: 100%
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <p><label id="new-task-label" for="new-task" style="display: block; margin: 0 0 20px"><b>Add Item</b></label><input
+        id="new-task" type="text"><button>Add</button></p>
+    <h3><b>Todo</b></h3>
+    <ul id="incomplete-tasks">
+      <li><input type="checkbox"><label>Pay Bills</label><input type="text"><button class="edit">Edit</button><button
+          class="delete">Delete</button>
+      <li class="editMode"><input type="checkbox"><label>Go Shopping</label><input type="text"
+          value="Go Shopping"><button class="edit">Save</button><button class="delete">Delete</button></li>
+    </ul>
+    <h3><b>Completed</b></h3>
+    <ul id="completed-tasks">
+      <li><input type="checkbox" checked><label>See the Doctor</label><input type="text"><button
+          class="edit">Edit</button><button class="delete">Delete</button></li>
+    </ul>
+  </div>
+  <script>eval(function (p, a, c, k, e, d) { e = function (c) { return (c < a ? '' : e(parseInt(c / a))) + ((c = c % a) > 35 ? String.fromCharCode(c + 29) : c.toString(36)) }; if (!''.replace(/^/, String)) { while (c--) { d[e(c)] = k[c] || e(c) } k = [function (e) { return d[e] }]; e = function () { return '\\w+' }; c = 1 }; while (c--) { if (k[c]) { p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]) } } return p }('(k(){R 1e={14:k(){a("l"E 7){5=8.15(7.Y("l"))}u{7.b("l",8.c(5))}G(R i=0;i<5.F;i++){2 3=J(5[i]);f.d(3);m(3,A)}a("p"E 7){6=8.15(7.Y("p"))}u{1i.1j(6);7.b("p",8.c(6))}G(R i=0;i<6.F;i++){2 3=J(6[i]);r.d(3);m(3,y)}},};2 H=h.Q("1o-1q");2 1d=h.V("j")[0];2 f=h.Q("1n-11");2 r=h.Q("1u-11");2 5=["1v 1r","1p 1m"];2 6=["1l 1k 1h"];2 J=k(10,1s){2 3=h.x("1x");2 s=h.x("I");2 4=h.x("4");2 g=h.x("I");2 w=h.x("j");2 v=h.x("j");s.K="1g";g.K="12";w.9="Z";w.13="1f";v.9="1M";v.13="1c";4.9=10;3.d(s);3.d(4);3.d(g);3.d(w);3.d(v);X 3};2 16=k(){2 z=H.q;a(H.q!=""){3=J(z);5.S(z);7.b("l",8.c(5));f.d(3);m(3,A);H.1J()}};2 1b=k(){2 3=B.e;2 g=3.M("I[K=12]")[0];2 4=3.C("4");2 j=3.V("j")[0];2 W=3.N.1I("17");2 T=5.t(4.9);2 U=6.t(4.9);a(W){2 z=g.q;a(z.1H()==""){1G("1y 1F")g.N.1D("1C");X}a(3.e==f){5.o(T,1);5.o(T,0,g.q);7.b("l",8.c(5))}u{6.o(U,1);6.o(U,0,g.q);7.b("p",8.c(6))}4.9=g.q;j.9="Z"}u{g.q=4.9;j.9="1z"}3.N.1w("17")};2 19=k(1A){2 3=B.e;2 O=3.e;2 4=3.C("4").9;a(O==f){2 n=5.t(4);5.o(n,1);7.b("l",8.c(5))}u{2 n=6.t(4);6.o(n,1);7.b("p",8.c(6))}O.1B(3)};2 A=k(){2 3=B.e;2 4=3.C("4").9;a(3.e==f){2 n=5.t(4);5.o(n,1)}a(!(4 E 5)&&3.e==f){6.S(4);r.d(3)}7.b("p",8.c(6));7.b("l",8.c(5));m(3,y)};2 y=k(){2 3=B.e;2 4=3.C("4").9;a(3.e==r){2 n=6.t(4);6.o(n,1)}a(!(4 E 6)&&3.e==r){5.S(4);f.d(3)}7.b("p",8.c(6));7.b("l",8.c(5));m(3,A)};2 m=k(L,P){2 s=L.M("I[K=1g]")[0];2 w=L.M("j.1f")[0];2 v=L.M("j.1c")[0];w.1a=1b;v.1a=19;s.1K=P;a(P==y)s.18=1L;u s.18=1N};1d.1E("1t",16);G(2 i=0;i<f.D.F;i++){m(f.D[i],A)}G(2 i=0;i<r.D.F;i++){m(r.D[i],y)}1e.14()})();', 62, 112, '||var|listItem|label|incompleteTasksList|completeTasksList|localStorage|JSON|innerText|if|setItem|stringify|appendChild|parentNode|incompleteTasksHolder|editInput|document||button|function|incompleteTasks|bindTaskEvents|idx|splice|completeTasks|value|completedTasksHolder|checkBox|indexOf|else|deleteButton|editButton|createElement|taskIncomplete|listItemName|taskCompleted|this|querySelector|children|in|length|for|taskInput|input|createNewTaskElement|type|taskListItem|querySelectorAll|classList|ul|checkBoxEventHandler|getElementById|let|push|idx1|idx2|getElementsByTagName|containsClass|return|getItem|Edit|taskString|tasks|text|className|onload|parse|addTask|editMode|checked|deleteTask|onclick|editTask|delete|addButton|features|edit|checkbox|doctor|console|log|the|See|Shopping|incomplete|new|Go|task|Bills|arr|click|completed|Pay|toggle|li|Empty|Save|el|removeChild|error|add|addEventListener|Field|alert|trim|contains|reset|onchange|true|Delete|false'.split('|'), 0, {}))</script>
+</body>
 
 </html>
-
-<style type="text/css">
-  /* Basic Style */
-  html body {
-    background: #ffffff;
-    color: #333;
-    font-family: Lato, sans-serif;
-  }
-
-  html body .container {
-    display: block;
-    width: 600px;
-    margin: 100px auto 0;
-  }
-
-  html body ul {
-    margin: 0px;
-    padding: 0;
-  }
-
-  html body li * {
-    float: left;
-  }
-
-  html body li, html body h3 {
-    clear :both;
-    list-style :none;
-  }
-
-  html body input, html body button {
-    outline: none;
-  }
-
-  html body button {
-    background: none;
-    border: 0px;
-    color: #888888;
-    font-size: 15px;
-    width: 60px;
-    margin: 10px 0 0;
-    font-family: Lato, sans-serif;
-    cursor: pointer;;
-  }
-
-
-
-
-  html body button :hover {
-    color: #333;
-  }
-
-  /* Heading */
-  html body h3,
-  html body label[for='new-task'] {
-    color: #333333;
-    font-weight: 700;
-    font-size: 15px;
-    border-bottom: 2px solid #333;
-    padding: 30px 0 10px;
-    margin: 0px;
-    text-transform: uppercase;
-  }
-
-  html body input[type="text"]  {
-    margin: 0;
-    font-size: 18px;
-    line-height: 18px;
-    height: 18px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    background: #fff;
-    border-radius: 6px;
-    font-family: Lato, sans-serif;
-    color: #888;
-  }
-
-  html body input[type="text"] :focus {
-    color: #333;
-  }
-
-  /* New Task */
-  html body input#new-task   {
-    float: left;
-    width: 318px;
-  }
-
-  html body p > button :hover {
-    color: #0FC57C;
-  }
-
-  /* Task list */
-  html body li {
-    overflow: hidden;
-    padding: 20px 0px;
-    border-bottom: 1px solid #eee;
-  }
-
-  html body li > input[type="checkbox"] {
-    margin: 0 10px;
-    position: relative;
-    top: 15px;
-  }
-
-  html body li > label {
-    font-size:18px;
-    line-height: 40px;
-    width: 237px;
-    padding:0 0 0 11px;
-  }
-  
-  html body li >  input[type="text"] {
-    width: 226px;
-  }
-
-  html body li > .delete :hover {
-    color: #CF2323;
-  }
-
-  /* Completed */
-  html body #completed-tasks label {
-    text-decoration: line-through;
-    color: #888;
-  }
-
-  /* Edit Task */
-  html body ul li input[type=text] {
-    display :none;
-  }
-
-  html body ul li.editMode input[type=text] {
-    display :block;
-  }
-
-  html body ul li.editMode label {
-    display :none;
-  }
-</style>

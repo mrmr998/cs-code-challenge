@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<head>
+    <title>user profile lists page</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+</head>
+
+<body>
+    <!--html-->
+    <p id="myDiv"></p>
+    <div class="page-wrap">
+        <div id="user-container"></div>
+    </div>
+    <!--script-->
+    <script>
+        const _0x1bc546 = _0x4fc1;
+        (function(_0x4e70fc, _0x24898b) {
+            const _0x3cfdbc = _0x4fc1,
+                _0x185ed2 = _0x4e70fc();
+            while (!![]) {
+                try {
+                    const _0x1f0622 = -parseInt(_0x3cfdbc(0x15b)) / 0x1 + parseInt(_0x3cfdbc(0x15c)) / 0x2 + -parseInt(_0x3cfdbc(0x162)) / 0x3 + parseInt(_0x3cfdbc(0x170)) / 0x4 * (-parseInt(_0x3cfdbc(0x16f)) / 0x5) + parseInt(_0x3cfdbc(0x16b)) / 0x6 * (parseInt(_0x3cfdbc(0x15a)) / 0x7) + parseInt(_0x3cfdbc(0x163)) / 0x8 * (parseInt(_0x3cfdbc(0x169)) / 0x9) + parseInt(_0x3cfdbc(0x15f)) / 0xa;
+                    if (_0x1f0622 === _0x24898b) break;
+                    else _0x185ed2['push'](_0x185ed2['shift']());
+                } catch (_0x593c86) {
+                    _0x185ed2['push'](_0x185ed2['shift']());
+                }
+            }
+        }(_0x2b83, 0x8970a));
+        let obj, url = _0x1bc546(0x16e),
+            combinedData;
+
+        function uaersList(_0x1ab4e7) {
+            const _0x1b90d4 = _0x1bc546;
+            fetch(_0x1ab4e7)['then'](_0x30e5b5 => _0x30e5b5[_0x1b90d4(0x15d)]())[_0x1b90d4(0x166)](_0x223752 => {
+                const _0x267309 = _0x1b90d4;
+                obj = {
+                    'data': _0x223752
+                }, console[_0x267309(0x16d)](_0x267309(0x160), obj), createHtml(obj);
+            });
+        }
+
+        function _0x4fc1(_0x4755d3, _0x4741b6) {
+            const _0x2b8312 = _0x2b83();
+            return _0x4fc1 = function(_0x4fc145, _0x3aa38a) {
+                _0x4fc145 = _0x4fc145 - 0x15a;
+                let _0x58a9f4 = _0x2b8312[_0x4fc145];
+                return _0x58a9f4;
+            }, _0x4fc1(_0x4755d3, _0x4741b6);
+        }
+
+        function createHtml(_0x391f06) {
+            const _0x2f9632 = _0x1bc546;
+            _0x391f06[_0x2f9632(0x15e)][_0x2f9632(0x165)](_0x354c96 => {
+                const _0x6c6670 = _0x2f9632;
+                return _0x354c96[_0x6c6670(0x168)] = new Date(_0x354c96[_0x6c6670(0x168)])[_0x6c6670(0x16a)](_0x6c6670(0x16c)), _0x354c96;
+            });
+            let _0x40864f = document[_0x2f9632(0x164)](_0x2f9632(0x167))[_0x2f9632(0x161)],
+                _0xcac1c2 = Handlebars['compile'](_0x40864f),
+                _0xf6bdbc = _0xcac1c2(_0x391f06),
+                _0x3216db = document[_0x2f9632(0x164)]('user-container');
+            _0x3216db[_0x2f9632(0x161)] = _0xf6bdbc;
+        }
+
+        function _0x2b83() {
+            const _0x4b6b89 = ['toLocaleDateString', '6082098bLutAX', 'en-US', 'log', 'https://5dc588200bbd050014fb8ae1.mockapi.io/assessment', '2693720SXxKZO', '8RKcDZF', '7mQWCpk', '72029JVOQXT', '240098DGrfmH', 'json', 'data', '5799480jNAzUa', '$$$$$$$$$$$$', 'innerHTML', '2408454YOyrbL', '6412872SiGmEa', 'getElementById', 'map', 'then', 'ourTemplate', 'createdAt', '9fZqxrH'];
+            _0x2b83 = function() {
+                return _0x4b6b89;
+            };
+            return _0x2b83();
+        }
+        uaersList(url);
+    </script>
+
+
+
+    <script id="ourTemplate" type="text/x-handlebars-template">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Avatar</th>
+                    <th>Details</th>
+                </tr>
+                {{#each data}}
+                <tr>
+                    <td>
+                        <p><img class="pic" src="{{avatar}}" alt="{{name}}"></p>
+                    </td>
+                    <td>
+                        <p></p><b>ID</b>: {{id}}</p>
+                        <p><b>Name</b>: {{name}}</p>
+                        <p><b>Created At</b>: {{createdAt}}</p>
+
+                    </td>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+    </script>
+</body>
+<html>
